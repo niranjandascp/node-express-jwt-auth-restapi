@@ -4,6 +4,7 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
@@ -18,15 +19,20 @@ app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 if (process.env.NODE_ENV === "production") {
-  app.use(morgan("dev"));
-} else {
   app.use(morgan("combined"));
+} else {
+  app.use(morgan("dev"));
 }
 
 app.use(cors());
 
 await connectDB();
 
+// Routes
+app.use("/api/auth", authRoutes);
+
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(
+    `💻 Server is running on http://localhost:${PORT} in ${process.env.NODE_ENV} mode`
+  );
 });
