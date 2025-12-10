@@ -5,6 +5,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
+import { errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
 
@@ -30,6 +31,9 @@ await connectDB();
 
 // Routes
 app.use("/api/auth", authRoutes);
+
+// Error Handling Middleware
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(
